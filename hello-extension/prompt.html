@@ -2,39 +2,40 @@
 <html>
   <head>
     <title>Tic-Tac-Toe Game</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
       :root {
-        /* Light Theme Variables */
-        --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        --text-color: #333;
-        --text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        --board-bg: #fff;
-        --board-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        --cell-bg: #f8f9fa;
-        --cell-hover-bg: #e9ecef;
-        --cell-text: #333;
-        --status-color: #333;
-        --header-bg: rgba(255,255,255,0.1);
-        --toggle-bg: linear-gradient(45deg, #ffc107, #fd7e14);
-        --toggle-text: #333;
-        --toggle-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        /* Day Theme Variables */
+        --bg-gradient: linear-gradient(to bottom, #87CEEB 0%, #98D8E8 30%, #B6E5F0 70%, #E0F6FF 100%);
+        --text-color: #2c3e50;
+        --text-shadow: 1px 1px 3px rgba(255,255,255,0.5);
+        --board-bg: rgba(255,255,255,0.9);
+        --board-shadow: 0 8px 25px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.1);
+        --cell-bg: rgba(255,255,255,0.8);
+        --cell-hover-bg: rgba(255,255,255,0.95);
+        --cell-text: #2c3e50;
+        --status-color: #2c3e50;
+        --header-bg: rgba(255,255,255,0.2);
+        --accent-color: #f39c12;
+        --reset-bg: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        --reset-hover: linear-gradient(135deg, #2980b9 0%, #1f639a 100%);
       }
 
       [data-theme="dark"] {
-        /* Dark Theme Variables */
-        --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-        --text-color: #e0e0e0;
-        --text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        --board-bg: #404040;
-        --board-shadow: 0 4px 8px rgba(0,0,0,0.4);
-        --cell-bg: #f5f5f5;
-        --cell-hover-bg: #e8e8e8;
-        --cell-text: #333;
-        --status-color: #e0e0e0;
-        --header-bg: rgba(0,0,0,0.3);
-        --toggle-bg: linear-gradient(45deg, #555555, #777777);
-        --toggle-text: white;
-        --toggle-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        /* Night Theme Variables */
+        --bg-gradient: linear-gradient(to bottom, #0f0f23 0%, #191970 30%, #483d8b 70%, #6a5acd 100%);
+        --text-color: #e8e6ff;
+        --text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        --board-bg: rgba(106, 90, 205, 0.15);
+        --board-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 3px 6px rgba(0,0,0,0.3);
+        --cell-bg: rgba(106, 90, 205, 0.1);
+        --cell-hover-bg: rgba(106, 90, 205, 0.2);
+        --cell-text: #e8e6ff;
+        --status-color: #e8e6ff;
+        --header-bg: rgba(15, 15, 35, 0.3);
+        --accent-color: #f1c40f;
+        --reset-bg: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        --reset-hover: linear-gradient(135deg, #8e44ad 0%, #732d91 100%);
       }
 
       body {
@@ -44,7 +45,30 @@
         text-align: center;
         background: var(--bg-gradient);
         color: var(--text-color);
-        transition: all 0.3s ease;
+        transition: all 0.6s ease;
+        position: relative;
+        overflow-x: hidden;
+      }
+      
+      body:before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(255,255,255,0.05) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.7;
+        animation: gentleFloat 20s infinite ease-in-out;
+      }
+      
+      @keyframes gentleFloat {
+        0%, 100% { transform: translateY(0px) scale(1); }
+        50% { transform: translateY(-10px) scale(1.02); }
       }
       
       .header {
@@ -65,96 +89,286 @@
       }
       
       .theme-toggle {
-        background: var(--toggle-bg);
-        color: var(--toggle-text);
+        position: relative;
+        width: 80px;
+        height: 40px;
         border: none;
-        padding: 8px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
+        border-radius: 25px;
         cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: var(--toggle-shadow);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 50px;
+        background: linear-gradient(to bottom, #87CEEB 0%, #98D8E8 40%, #B6E5F0 100%);
+        transition: all 0.6s ease;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4);
+        overflow: hidden;
       }
       
       .theme-toggle:hover {
-        transform: scale(1.1) rotate(15deg);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transform: scale(1.05);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4);
+      }
+      
+      .theme-toggle.dark {
+        background: linear-gradient(to bottom, #0f0f23 0%, #191970 40%, #483d8b 100%);
+      }
+      
+      .toggle-slider {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 32px;
+        height: 32px;
+        background: radial-gradient(circle at 30% 30%, #fff 0%, #f9d71c  100%);
+        border-radius: 50%;
+        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        z-index: 10;
+      }
+      
+      .theme-toggle.dark .toggle-slider {
+        transform: translateX(40px);
+        background: radial-gradient(circle at 70% 20%, #fff 0%, #f5f5f5 30%, #ddd 100%);
+        box-shadow: inset -4px -4px 8px rgba(0,0,0,0.3);
+      }
+      
+      .toggle-slider i {
+        color: #f39c12;
+        transition: all 0.6s ease;
+        text-shadow: 0 0 8px rgba(243, 156, 18, 0.6);
+      }
+      
+      .theme-toggle.dark .toggle-slider i {
+        color: #666;
+        text-shadow: none;
+      }
+      
+      /* Clouds */
+      .cloud {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50px;
+        opacity: 0.8;
+      }
+      
+      .cloud:before,
+      .cloud:after {
+        content: '';
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50px;
+      }
+      
+      .cloud1 {
+        width: 12px;
+        height: 4px;
+        top: 8px;
+        left: 15px;
+        animation: float1 4s infinite ease-in-out;
+      }
+      
+      .cloud1:before {
+        width: 6px;
+        height: 4px;
+        top: -2px;
+        left: 2px;
+      }
+      
+      .cloud1:after {
+        width: 8px;
+        height: 3px;
+        top: -1px;
+        right: 2px;
+      }
+      
+      .cloud2 {
+        width: 8px;
+        height: 3px;
+        top: 15px;
+        right: 20px;
+        animation: float2 3s infinite ease-in-out reverse;
+      }
+      
+      .cloud2:before {
+        width: 4px;
+        height: 3px;
+        top: -1px;
+        left: 1px;
+      }
+      
+      .cloud2:after {
+        width: 5px;
+        height: 2px;
+        top: -1px;
+        right: 1px;
+      }
+      
+      .theme-toggle.dark .cloud {
+        opacity: 0;
+      }
+      
+      /* Stars */
+      .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+      
+      .star1 { top: 6px; left: 15px; animation: twinkle 2s infinite; }
+      .star2 { top: 12px; right: 25px; animation: twinkle 1.8s infinite 0.5s; }
+      .star3 { top: 18px; left: 25px; animation: twinkle 2.2s infinite 1s; }
+      .star4 { top: 25px; right: 15px; animation: twinkle 1.9s infinite 1.3s; }
+      .star5 { top: 30px; left: 35px; animation: twinkle 2.1s infinite 0.8s; }
+      
+      .theme-toggle.dark .star {
+        opacity: 1;
+      }
+      
+      @keyframes float1 {
+        0%, 100% { transform: translateX(0px); }
+        50% { transform: translateX(8px); }
+      }
+      
+      @keyframes float2 {
+        0%, 100% { transform: translateX(0px); }
+        50% { transform: translateX(-6px); }
+      }
+      
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.2); }
       }
       
       .game-board {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-        width: 240px;
+        gap: 8px;
+        width: 250px;
         margin: 0 auto 20px;
-        background-color: var(--board-bg);
-        padding: 10px;
-        border-radius: 10px;
+        background: var(--board-bg);
+        padding: 15px;
+        border-radius: 20px;
         box-shadow: var(--board-shadow);
-        transition: all 0.3s ease;
+        transition: all 0.6s ease;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
       }
       
       .cell {
         width: 70px;
         height: 70px;
-        background-color: var(--cell-bg);
-        border: none;
-        border-radius: 5px;
-        font-size: 24px;
+        background: var(--cell-bg);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 15px;
+        font-size: 26px;
         font-weight: bold;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         color: var(--cell-text);
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .cell:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
       }
       
       .cell:hover {
-        background-color: var(--cell-hover-bg);
-        transform: scale(1.05);
+        background: var(--cell-hover-bg);
+        transform: scale(1.08) translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
+      }
+      
+      .cell:hover:before {
+        opacity: 1;
+      }
+      
+      .cell:active {
+        transform: scale(1.02) translateY(0);
       }
       
       .cell.x {
         color: #e74c3c;
+        text-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
       }
       
       .cell.o {
         color: #3498db;
+        text-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
       }
       
       .status {
         font-size: 18px;
         font-weight: bold;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         text-shadow: var(--text-shadow);
         color: var(--status-color);
+        padding: 10px 15px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 25px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: all 0.6s ease;
       }
       
       .reset-btn {
-        background: linear-gradient(45deg, #ff6b6b, #feca57);
+        background: var(--reset-bg);
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 12px 25px;
         border-radius: 25px;
         font-size: 16px;
+        font-weight: bold;
         cursor: pointer;
-        transition: transform 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1);
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
       }
       
       .reset-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        background: var(--reset-hover);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+      }
+      
+      .reset-btn:active {
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.2);
       }
     </style>
   </head>
   <body>
      <div class="header">
       <h1>Tic-Tac-Toe</h1>
-      <button class="theme-toggle" id="themeToggle">Dark</button>
+      <button class="theme-toggle" id="themeToggle">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="star star1"></div>
+        <div class="star star2"></div>
+        <div class="star star3"></div>
+        <div class="star star4"></div>
+        <div class="star star5"></div>
+        <div class="toggle-slider">
+          <i class="bi bi-sun-fill"></i>
+        </div>
+      </button>
     </div>
     <div class="status" id="status">Player X's Turn</div>
     <div class="game-board" id="gameBoard">

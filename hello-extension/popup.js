@@ -116,17 +116,22 @@ class TicTacToe {
   
   applyTheme() {
     const body = document.body;
+    const icon = this.themeToggle.querySelector('i');
+    
     if (this.currentTheme === 'dark') {
       body.setAttribute('data-theme', 'dark');
-      this.themeToggle.textContent = 'Light';
+      this.themeToggle.classList.add('dark');
+      icon.className = 'bi bi-moon-stars';
     } else {
       body.removeAttribute('data-theme');
-      this.themeToggle.textContent = 'Dark';
+      this.themeToggle.classList.remove('dark');
+      icon.className = 'bi bi-sun-fill';
     }
   }
   
   loadTheme() {
-    chrome.storage.sync.get(['theme'], (result) => {
+    const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
+    storage.sync.get(['theme'], (result) => {
       if (result.theme) {
         this.currentTheme = result.theme;
       }
@@ -135,7 +140,8 @@ class TicTacToe {
   }
   
   saveTheme() {
-    chrome.storage.sync.set({ theme: this.currentTheme });
+    const storage = typeof browser !== 'undefined' ? browser.storage : chrome.storage;
+    storage.sync.set({ theme: this.currentTheme });
   }
 }
 
