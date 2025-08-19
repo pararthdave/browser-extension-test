@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Tic-Tac-Toe Game",
+  "version": "1.0",
+  "description": "A cool tic-tac-toe game browser extension",
+  "action": {
+    "default_popup": "prompt.html",
+    "default_icon": {
+      "16": "icon.png"
+    }
+  },
+  "permissions": ["storage"]
+}
