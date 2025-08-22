@@ -12,6 +12,14 @@ A beautiful, interactive Tic-Tac-Toe game browser extension with dark/light them
 
 ## Installation 📦
 
+### Install from Mozilla Firefox Add-ons 🎉
+
+We're live! 🚀 The extension is now officially available on the Mozilla Firefox Add-ons store:
+
+🦊 **[Get it on Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/tic-tac-toe-gamify/)** ⭐
+
+Just one click and you're ready to play! No more manual installation needed for Firefox users.
+
 ### Load as Unpacked Extension (Development)
 
 1. Clone or download this repository
